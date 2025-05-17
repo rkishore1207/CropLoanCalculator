@@ -1,0 +1,33 @@
+.userInputBody {
+  background-color: #fff1d5;
+  margin: 1.5rem;
+  border-radius: 0.5rem;
+  padding: 2rem 10rem;
+  gap: 1.5rem;
+}
+
+.userInput {
+  width: 100%;
+  height: 50px;
+}
+
+.customerItem {
+  flex: 1;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-weight: bold;
+}
+
+.calculateButtonContainer {
+  overflow: hidden;
+}
+
+.calculateButtonContainer button {
+  margin-top: 30px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+    overflow: hidden;
+  }
+}
