@@ -1,0 +1,6 @@
+.loanCalculatorBody {
+  width: 100%;
+  display: grid;
+  grid-template-rows: 30% 70%;
+  height: 100vh;
+}
