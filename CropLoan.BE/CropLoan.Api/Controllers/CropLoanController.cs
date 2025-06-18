@@ -1,11 +1,13 @@
 ﻿using CropLoan.Business.Interface;
 using CropLoan.Model.Request;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CropLoan.Api.Controllers
 {
-    [Route("api/cropLoan")]
     [ApiController]
+    [Route("api/cropLoan")]
+    [EnableCors("ReactCORS")]
     public class CropLoanController : ControllerBase
     {
         private readonly ICropLoanProcessController _cropLoanProcessController;
@@ -24,10 +26,32 @@ namespace CropLoan.Api.Controllers
         }
 
         [HttpPost]
-        [Route("saveLoan")]
-        public async Task SaveLoan([FromBody] CropLoanRequestModel cropLoanRequest)
+        [Route("addOrUpdateLoan")]
+        public async Task AddOrUpdateLoan([FromBody] CropLoanRequestModel cropLoanRequest)
         {
-            await _cropLoanProcessController.SaveLoan(cropLoanRequest);
+            await _cropLoanProcessController.AddOrUpdateLoan(cropLoanRequest);
+        }
+
+        [HttpPost]
+        [Route("loansWithFilter")]
+        public async Task<IActionResult> GetLoansWithFilter([FromBody] LoanFilterRequest request)
+        {
+            var loans = await _cropLoanProcessController.GetLoansWithFilter(request);
+            return Ok(loans);
+        }
+
+        [HttpGet]
+        [Route("generateExcel")]
+        public async Task GenerateExcel()
+        {
+            await _cropLoanProcessController.GenerateExcel();
+        }
+
+        [HttpDelete]
+        [Route("{loanUID}/deleteLoan")]
+        public async Task DeleteLoan(Guid loanUID)
+        {
+            await _cropLoanProcessController.DeleteLoan(loanUID);
         }
     }
 }

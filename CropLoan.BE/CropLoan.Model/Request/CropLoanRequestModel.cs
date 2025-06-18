@@ -1,14 +1,15 @@
-﻿using CropLoan.Utility.Enums;
-
-namespace CropLoan.Model.Request
+﻿namespace CropLoan.Model.Request
 {
     public class CropLoanRequestModel
     {
+        public Guid UID { get; set; }
         public string RegisterNumber { get; set; }
         public string CustomerName { get; set; }
         public string LoanNumber { get; set; }
-        public CropType CropType { get; set; }
-        public FarmerType FarmerType { get; set; }
+        public int CropTypeId { get; set; }
+        public string CropType { get; set; }
+        public int FarmerTypeId { get; set; }
+        public string FarmerType { get; set; }
         public decimal Acre { get; set; }
         public decimal Fertilizer { get; set; }
         public decimal Seed { get; set; }
@@ -16,6 +17,6 @@ namespace CropLoan.Model.Request
         public decimal ThozhuUram { get; set; }
         public decimal ReadyCash { get; set; }
         public decimal GrandTotal { get; set; }
-        public decimal Total { get; set; }
+        public decimal TotalAmount { get; set; }
     }
 }

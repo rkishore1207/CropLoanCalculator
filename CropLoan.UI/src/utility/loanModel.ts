@@ -1,9 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface LoanAmount {
   uid: string;
+  registerNumber: string;
   customerName: string;
-  cropType: string;
+  loanNumber: string;
+  cropTypeId: number;
+  cropTypeName: string;
   acre: number;
+  farmerTypeId: number;
+  farmerType: string;
   readyCash: number;
   fertilizer: number;
   seed: number;
@@ -27,4 +32,20 @@ export interface InputType {
   loanNumber: string;
   cropType: number;
   acre: any;
+}
+
+export interface LoanFilter {
+  date: {
+    fromDate: any;
+    toDate: any;
+  };
+  cropTypeId: number;
+  farmerTypeId: number;
+}
+
+export interface FilterModel {
+  id: number;
+  value: string;
+  categoryId: number;
+  isSelected: boolean;
 }

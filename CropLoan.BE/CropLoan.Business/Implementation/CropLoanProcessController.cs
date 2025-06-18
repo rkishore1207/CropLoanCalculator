@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using CropLoan.Business.Helper;
 using CropLoan.Business.Interface;
 using CropLoan.Data.Interface;
 using CropLoan.Model.Entity;
 using CropLoan.Model.Request;
 using CropLoan.Model.View;
+using DocumentFormat.OpenXml.Spreadsheet;
+using System.ComponentModel.DataAnnotations;
 
 namespace CropLoan.Business.Implementation
 {
@@ -27,19 +30,71 @@ namespace CropLoan.Business.Implementation
         public async Task<List<CropLoanViewModel>> GetAllLoans()
         {
             var loans = await _cropLoanRepository.GetAllLoans();
-            var loanViews = _mapper.Map<List<CropLoanViewModel>>(loans);
+            var loanViews = _mapper.Map<List<CropLoanViewModel>>(loans.OrderByDescending(x => x.CreatedOn));
             return loanViews;
         }
 
         /// <summary>
-        /// Saving Loan Request
+        /// Adding or Updating Loan Request
         /// </summary>
         /// <param name="cropLoanRequest"></param>
         /// <returns></returns>
-        public async Task SaveLoan(CropLoanRequestModel cropLoanRequest)
+        public async Task AddOrUpdateLoan(CropLoanRequestModel cropLoanRequest)
         {
             var cropEntity = _mapper.Map<CropLoanEntityModel>(cropLoanRequest);
-            await _cropLoanRepository.SaveLoan(cropEntity);
+            await _cropLoanRepository.AddOrUpdateLoan(cropEntity);
+        }
+
+        /// <summary>
+        /// Getting Loans with Filter
+        /// </summary>
+        /// <param name="filterRequest"></param>
+        /// <returns></returns>
+        public async Task<List<CropLoanViewModel>> GetLoansWithFilter(LoanFilterRequest filterRequest)
+        {
+            var context = new ValidationContext(filterRequest.Date, serviceProvider: null, items: null);
+            var results = new List<ValidationResult>();
+            bool isValidDate = Validator.TryValidateObject(filterRequest.Date, context, results, validateAllProperties: true);
+
+            var loans = await _cropLoanRepository.GetAllLoans();
+            var filteredLoans = loans;
+
+            if (isValidDate)
+                filteredLoans = filteredLoans.Where(x => x.CreatedOn >= filterRequest.Date.FromDate && x.CreatedOn <= filterRequest.Date.ToDate).ToList();
+
+            if (filterRequest.CropTypeId != 0)
+                filteredLoans = filteredLoans.Where(x => x.CropTypeId == filterRequest.CropTypeId).ToList();
+
+            if (filterRequest.FarmerTypeId != 0)
+                filteredLoans = filteredLoans.Where(x => x.FarmerTypeId == filterRequest.FarmerTypeId).ToList();
+
+            var loanViews = _mapper.Map<List<CropLoanViewModel>>(filteredLoans.OrderByDescending(x => x.CreatedOn));
+            return loanViews;
+        }
+
+        /// <summary>
+        /// Generating Excel
+        /// </summary>
+        /// <param name="Generating Excel"></param>
+        /// <returns></returns>
+        public async Task GenerateExcel()
+        {
+            string timestamp = DateTime.Now.ToString("dd-MM-yyyy HH-mm-ss");
+            string fileName = $"D:\\Exports\\{timestamp}-Loans.xlsx";
+            Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+
+            var loans = await _cropLoanRepository.GetAllLoans();
+            var workBookOpenXml = new WorkbookOpenXML();
+            workBookOpenXml.ExportToExcel(loans, fileName);
+        }
+
+        /// <summary>
+        /// Deleting Loan By UID
+        /// </summary>
+        /// <returns>Loan UID</returns>
+        public async Task DeleteLoan(Guid loanUID)
+        {
+            await _cropLoanRepository.DeleteLoan(loanUID);
         }
     }
 }

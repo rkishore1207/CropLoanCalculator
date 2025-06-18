@@ -16,6 +16,14 @@ builder.Services.AddSingleton<IConfigurationService, ConfigurationService>();
 
 builder.Services.AddBusinessServices().AddDataServices();
 
+builder.Services.AddCors(opts =>
+{
+    opts.AddPolicy("ReactCORS", options =>
+    {
+        options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,7 +34,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors();
 app.UseAuthorization();
 
 
