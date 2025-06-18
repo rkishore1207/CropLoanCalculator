@@ -5,6 +5,7 @@ namespace CropLoan.Data.Interface
     public interface ICropLoanRepository
     {
         Task<List<CropLoanEntityModel>> GetAllLoans();
-        Task SaveLoan(CropLoanEntityModel cropLoanEntity);
+        Task AddOrUpdateLoan(CropLoanEntityModel cropLoanEntity);
+        Task DeleteLoan(Guid loanUID);
     }
 }

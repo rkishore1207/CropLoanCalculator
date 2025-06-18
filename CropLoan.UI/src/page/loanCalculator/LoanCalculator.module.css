@@ -1,6 +1,52 @@
-.loanCalculatorBody {
+.tableContainer {
+  background-color: #f2f0ef;
+  border-radius: 0.5rem;
+}
+
+.loanCalculatorTable {
   width: 100%;
-  display: grid;
-  grid-template-rows: 30% 70%;
-  height: 100vh;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.tableHeader {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.loanCalculatorTable th,
+.loanCalculatorTable td {
+  padding: 8px 5px;
+  text-align: center;
+  white-space: text-wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: larger;
+}
+
+tr {
+  border-bottom: 1px solid #ccc;
+}
+
+.tableScroll {
+  height: 550px;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.noDataAvailable {
+  text-align: center;
+  font-size: 1rem;
+  color: #000;
+  width: 100%;
+}
+
+.remove {
+  cursor: pointer;
+
+  &:hover {
+    color: red;
+  }
 }

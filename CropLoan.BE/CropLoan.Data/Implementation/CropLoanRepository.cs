@@ -1,6 +1,8 @@
 ﻿using CropLoan.Data.Interface;
+using CropLoan.Model.Dto;
 using CropLoan.Model.Entity;
 using CropLoan.Utility.Configuration;
+using System.Data;
 
 namespace CropLoan.Data.Implementation
 {
@@ -26,9 +28,33 @@ namespace CropLoan.Data.Implementation
         /// Saving the Loan Entry
         /// </summary>
         /// <returns></returns>
-        public async Task SaveLoan(CropLoanEntityModel cropLoanEntity)
+        public async Task AddOrUpdateLoan(CropLoanEntityModel cropLoanEntity)
         {
-            await ExecuteStoredProcedureNonQueryAsync("[dbo].[SaveLoan]");
+            var uidParam = SpParameter.Create("uid", cropLoanEntity.UID, ParameterDirection.Input, SqlDbType.UniqueIdentifier);
+            var registerNumberParam = SpParameter.Create("RegisterNumber", cropLoanEntity.RegisterNumber, ParameterDirection.Input, SqlDbType.NVarChar);
+            var nameParam = SpParameter.Create("Name", cropLoanEntity.CustomerName, ParameterDirection.Input, SqlDbType.NVarChar);
+            var loanNumberParam = SpParameter.Create("LoanNumber", cropLoanEntity.LoanNumber, ParameterDirection.Input, SqlDbType.NVarChar);
+            var cropTypeParam = SpParameter.Create("CropTypeId", cropLoanEntity.CropTypeId, ParameterDirection.Input, SqlDbType.Int);
+            var farmerTypeParam = SpParameter.Create("FarmerTypeId", cropLoanEntity.FarmerTypeId, ParameterDirection.Input, SqlDbType.Int);
+            var acreParam = SpParameter.Create("Acre", cropLoanEntity.Acre, ParameterDirection.Input, SqlDbType.Decimal);
+            var fertilizerParam = SpParameter.Create("Fertilizer", cropLoanEntity.Fertilizer, ParameterDirection.Input, SqlDbType.Decimal);
+            var seedParam = SpParameter.Create("Seed", cropLoanEntity.Seed, ParameterDirection.Input, SqlDbType.Decimal);
+            var insecticideParam = SpParameter.Create("Insecticide", cropLoanEntity.Insecticide, ParameterDirection.Input, SqlDbType.Decimal);
+            var thozhuUram = SpParameter.Create("ThozhuUram", cropLoanEntity.ThozhuUram, ParameterDirection.Input, SqlDbType.Decimal);
+            var readyCashParam = SpParameter.Create("ReadyCash", cropLoanEntity.ReadyCash, ParameterDirection.Input, SqlDbType.Decimal);
+            var grandTotalParam = SpParameter.Create("GrandTotal", cropLoanEntity.GrandTotal, ParameterDirection.Input, SqlDbType.Decimal);
+            var totalParam = SpParameter.Create("Total", cropLoanEntity.TotalAmount, ParameterDirection.Input, SqlDbType.Decimal);
+            await ExecuteStoredProcedureNonQueryAsync("[dbo].[AddOrUpdateLoan]",uidParam, registerNumberParam, nameParam, loanNumberParam, cropTypeParam, farmerTypeParam, acreParam, fertilizerParam, seedParam, insecticideParam, thozhuUram, readyCashParam, grandTotalParam, totalParam);
+        }
+
+        /// <summary>
+        /// Deleting the loan by UID
+        /// </summary>
+        /// <returns>Loan UID</returns>
+        public async Task DeleteLoan(Guid loanUID)
+        {
+            var uidParam = SpParameter.Create("LoanUID", loanUID, ParameterDirection.Input, SqlDbType.UniqueIdentifier);
+            await ExecuteStoredProcedureNonQueryAsync("[dbo].[DeleteLoan]", uidParam);
         }
     }
 }
