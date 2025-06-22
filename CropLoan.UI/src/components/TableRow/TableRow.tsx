@@ -172,8 +172,8 @@ const TableRow = ({
       <td title={loanValue.grandTotal?.toString()}>{loanValue.grandTotal}</td>
       <td title={loanValue.totalAmount?.toString()}>{loanValue.totalAmount}</td>
       {selectedUID === loanValue.uid || isEdit ? (
-        <td onClick={() => handleSaveClick(loanValue.uid)}>
-          <div onClick={() => handleSaveClick(loanValue.uid)}>
+        <td>
+          <span onClick={() => handleSaveClick(loanValue.uid)}>
             <Tooltip title="Save" placement="top" arrow={true}>
               <SaveIcon
                 className={
@@ -184,37 +184,43 @@ const TableRow = ({
                 }}
               />
             </Tooltip>
-          </div>
+          </span>
         </td>
       ) : (
-        <td
-          onClick={() => {
-            setIsEdit(true);
-            setIsSaveDisabled(false);
-          }}
-        >
-          <Tooltip title="Edit" placement="top" arrow={true}>
-            <EditIcon className={styles.editLoan} />
-          </Tooltip>
+        <td>
+          <span
+            onClick={() => {
+              setIsEdit(true);
+              setIsSaveDisabled(false);
+            }}
+          >
+            <Tooltip title="Edit" placement="top" arrow={true}>
+              <EditIcon className={styles.editLoan} />
+            </Tooltip>
+          </span>
         </td>
       )}
       {selectedUID === loanValue.uid ? (
-        <td
-          className={styles.remove}
-          onClick={() => handleRemove(loanValue.uid)}
-        >
-          <Tooltip title="Remove" placement="top" arrow={true}>
-            <ClearIcon className={styles.removeLoan} />
-          </Tooltip>
+        <td>
+          <span
+            className={styles.remove}
+            onClick={() => handleRemove(loanValue.uid)}
+          >
+            <Tooltip title="Remove" placement="top" arrow={true}>
+              <ClearIcon className={styles.removeLoan} />
+            </Tooltip>
+          </span>
         </td>
       ) : (
-        <td
-          className={styles.remove}
-          onClick={() => handleDelete(loanValue.uid)}
-        >
-          <Tooltip title="Delete" placement="top" arrow={true}>
-            <DeleteOutlineIcon className={styles.deleteLoan} />
-          </Tooltip>
+        <td>
+          <span
+            className={styles.remove}
+            onClick={() => handleDelete(loanValue.uid)}
+          >
+            <Tooltip title="Delete" placement="top" arrow={true}>
+              <DeleteOutlineIcon className={styles.deleteLoan} />
+            </Tooltip>
+          </span>
         </td>
       )}
     </tr>
