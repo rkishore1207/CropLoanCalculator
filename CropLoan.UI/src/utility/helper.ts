@@ -41,9 +41,9 @@ export const CropType = (type: number): CropInput => {
 
 export const getFarmerType = (acre: number) => {
   if (acre > 0 && acre <= 2.5) {
-    return { id: FarmerTypeEnum.SF, name: "MF" };
+    return { id: FarmerTypeEnum.MF, name: "MF" };
   } else if (acre > 2.5 && acre < 5) {
-    return { id: FarmerTypeEnum.MF, name: "SF" };
+    return { id: FarmerTypeEnum.SF, name: "SF" };
   } else if (acre >= 5) {
     return { id: FarmerTypeEnum.OF, name: "OF" };
   }
