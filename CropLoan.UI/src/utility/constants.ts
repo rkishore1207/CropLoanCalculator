@@ -49,3 +49,14 @@ export const filterCategoryOptions = [
   { value: 1, label: "Crop Type" },
   { value: 2, label: "Farmer Type" },
 ];
+
+export const ExcelMessage = {
+  success: "Excel Downloaded Successfully",
+  failed: "Excel Download Failed",
+};
+
+export const loanSnackBarMessage = {
+  saveSuccess: "Loan Saved Successfully",
+  failed: "Failed",
+  deleteSuccess: "Loan Deleted Successfully",
+};

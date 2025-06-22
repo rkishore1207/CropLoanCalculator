@@ -10,6 +10,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setAddButtonVisibility } from "../../store/LoanStore/loan.actions";
+import { Tooltip } from "@mui/material";
 
 interface TableRowProps {
   loanValue: LoanAmount;
@@ -41,15 +42,17 @@ const TableRow = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (
-      loanValue.registerNumber &&
-      loanValue.customerName &&
-      loanValue.cropTypeId &&
-      loanValue.acre
-    )
-      setIsSaveDisabled(false);
-    else setIsSaveDisabled(true);
-  }, [loanValue]);
+    if (!isEdit) {
+      if (
+        loanValue.registerNumber &&
+        loanValue.customerName &&
+        loanValue.cropTypeId &&
+        loanValue.acre
+      )
+        setIsSaveDisabled(false);
+      else setIsSaveDisabled(true);
+    }
+  }, [loanValue, isEdit]);
 
   const handleSaveClick = (uid: any) => {
     if (isSaveDisabled) return;
@@ -170,12 +173,18 @@ const TableRow = ({
       <td title={loanValue.totalAmount?.toString()}>{loanValue.totalAmount}</td>
       {selectedUID === loanValue.uid || isEdit ? (
         <td onClick={() => handleSaveClick(loanValue.uid)}>
-          <SaveIcon
-            sx={{
-              color: isSaveDisabled ? "#ccc" : "#000",
-              cursor: isSaveDisabled ? "no-drop" : "pointer",
-            }}
-          />
+          <div onClick={() => handleSaveClick(loanValue.uid)}>
+            <Tooltip title="Save" placement="top" arrow={true}>
+              <SaveIcon
+                className={
+                  isSaveDisabled ? styles.saveLoanDisable : styles.saveLoan
+                }
+                sx={{
+                  color: isSaveDisabled ? "#ccc" : "#000",
+                }}
+              />
+            </Tooltip>
+          </div>
         </td>
       ) : (
         <td
@@ -184,7 +193,9 @@ const TableRow = ({
             setIsSaveDisabled(false);
           }}
         >
-          <EditIcon />
+          <Tooltip title="Edit" placement="top" arrow={true}>
+            <EditIcon className={styles.editLoan} />
+          </Tooltip>
         </td>
       )}
       {selectedUID === loanValue.uid ? (
@@ -192,14 +203,18 @@ const TableRow = ({
           className={styles.remove}
           onClick={() => handleRemove(loanValue.uid)}
         >
-          <ClearIcon />
+          <Tooltip title="Remove" placement="top" arrow={true}>
+            <ClearIcon className={styles.removeLoan} />
+          </Tooltip>
         </td>
       ) : (
         <td
           className={styles.remove}
           onClick={() => handleDelete(loanValue.uid)}
         >
-          <DeleteOutlineIcon />
+          <Tooltip title="Delete" placement="top" arrow={true}>
+            <DeleteOutlineIcon className={styles.deleteLoan} />
+          </Tooltip>
         </td>
       )}
     </tr>

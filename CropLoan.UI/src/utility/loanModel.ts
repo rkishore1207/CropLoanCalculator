@@ -1,3 +1,5 @@
+import type { SnackbarOrigin } from "@mui/material";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface LoanAmount {
   uid: string;
@@ -35,10 +37,7 @@ export interface InputType {
 }
 
 export interface LoanFilter {
-  date: {
-    fromDate: any;
-    toDate: any;
-  };
+  date: any;
   cropTypeId: number;
   farmerTypeId: number;
 }
@@ -48,4 +47,14 @@ export interface FilterModel {
   value: string;
   categoryId: number;
   isSelected: boolean;
+}
+
+export interface SnackBarModel extends SnackbarOrigin {
+  isOpen: boolean;
+  message: string;
+}
+
+export interface DeletePopupModel {
+  canShowDeletePopup: boolean;
+  selectedUID: any;
 }

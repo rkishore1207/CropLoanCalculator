@@ -24,3 +24,12 @@
 .buttons {
   gap: 1.5rem;
 }
+
+.exportButton {
+  cursor: pointer;
+  padding: 5px;
+  &:hover {
+    border-radius: 50%;
+    background-color: #9a9fce;
+  }
+}

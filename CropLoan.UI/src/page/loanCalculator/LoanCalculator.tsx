@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./LoanCalculator.module.css";
-import type { LoanAmount } from "../../utility/loanModel";
+import type {
+  DeletePopupModel,
+  LoanAmount,
+  SnackBarModel,
+} from "../../utility/loanModel";
 import { v4 as uuidv4 } from "uuid";
 import TableRow from "../../components/TableRow/TableRow";
 import { CropType, getFarmerType } from "../../utility/helper";
@@ -15,6 +19,11 @@ import {
   setLoanCopyValues,
   setLoanValues,
 } from "../../store/LoanStore/loan.actions";
+import TableHeader from "./tableHeader/TableHeader";
+import ConfirmPopup from "../../components/ConfirmPopup/ConfirmPopup";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { Snackbar } from "@mui/material";
+import { loanSnackBarMessage } from "../../utility/constants";
 
 const LoanCalculator = () => {
   const { loanValues, loanValuesCopy } = useSelector(
@@ -22,6 +31,29 @@ const LoanCalculator = () => {
   );
   const dispatch = useDispatch();
   const [selectedUID, setSelectedUID] = useState<string>("");
+  const [navBarHeight, setNavBarHeight] = useState<any>(null);
+  const [tableHeaderHeight, setTableHeaderHeight] = useState<any>(null);
+  const navBarRef = useRef<any>(null);
+  const tableHeaderRef = useRef<any>(null);
+  const [deletePopup, setDeletePopup] = useState<DeletePopupModel>({
+    canShowDeletePopup: false,
+    selectedUID: "",
+  });
+  const [loanSnackBar, setLoanSnackBar] = useState<SnackBarModel>({
+    isOpen: false,
+    message: "",
+    vertical: "bottom",
+    horizontal: "left",
+  });
+  const { vertical, horizontal, isOpen, message } = loanSnackBar;
+
+  const deletePopupConfig = {
+    title: "Delete Loan",
+    titleIcon: <DeleteOutlineIcon color="error" />,
+    description: "Are you sure, you want to delete this Loan",
+    canShowCloseIcon: true,
+    submitButtonName: "Delete",
+  };
 
   useEffect(() => {
     const getLoans = async () => {
@@ -39,6 +71,20 @@ const LoanCalculator = () => {
 
     getLoans();
   }, [dispatch]);
+
+  useEffect(() => {
+    // To calculate the height of the table container by subtracting the top nav bar's height
+    if (navBarRef?.current) {
+      const height = navBarRef?.current?.offsetHeight;
+      setNavBarHeight(height);
+    }
+
+    // To calculate the height of the table body by subtracting the top nav bar's height and table header
+    if (tableHeaderRef?.current) {
+      const tableHeight = tableHeaderRef?.current?.offsetHeight;
+      setTableHeaderHeight(tableHeight);
+    }
+  }, [navBarHeight, tableHeaderHeight]);
 
   const insertNewRow = useCallback(() => {
     const newUUID = uuidv4();
@@ -155,6 +201,12 @@ const LoanCalculator = () => {
   };
 
   const handleDelete = async (uid: string) => {
+    setDeletePopup((prev: DeletePopupModel) => ({
+      ...prev,
+      canShowDeletePopup: false,
+      selectedUID: "",
+    }));
+
     const updatedLoanValues = loanValues.filter(
       (loan: LoanAmount) => loan.uid !== uid
     );
@@ -162,11 +214,21 @@ const LoanCalculator = () => {
     await LoanService.deleteLoan(uid)
       .then(() => {
         setSelectedUID("");
+        setLoanSnackBar((prev: SnackBarModel) => ({
+          ...prev,
+          isOpen: true,
+          message: loanSnackBarMessage.deleteSuccess,
+        }));
         dispatch(setAddButtonVisibility(false));
         dispatch(setLoanValues(updatedLoanValues));
         dispatch(setLoanCopyValues(updatedLoanValues));
       })
       .catch((error: any) => {
+        setLoanSnackBar((prev: SnackBarModel) => ({
+          ...prev,
+          isOpen: true,
+          message: loanSnackBarMessage.failed,
+        }));
         console.error("Error in Deleting data:", error);
       });
   };
@@ -195,38 +257,45 @@ const LoanCalculator = () => {
     );
     if (!loanValue) return;
     await LoanService.addOrUpdateLoan(loanValue)
-      .then(() => {})
+      .then(() => {
+        setLoanSnackBar((prev: SnackBarModel) => ({
+          ...prev,
+          isOpen: true,
+          message: loanSnackBarMessage.saveSuccess,
+        }));
+      })
       .catch((error: any) => {
+        setLoanSnackBar((prev: SnackBarModel) => ({
+          ...prev,
+          isOpen: true,
+          message: loanSnackBarMessage.failed,
+        }));
         console.error("Error saving data:", error);
       });
   };
 
   return (
     <div>
-      <NavBar insertNewRow={insertNewRow} />
-      <div className={styles.tableContainer}>
-        <table className={styles.loanCalculatorTable}>
-          <thead className={styles.tableHeader}>
-            <tr>
-              <th title="Register Number">Register Number</th>
-              <th title="Customer Name">Name</th>
-              <th title="Loan Number">Loan Number</th>
-              <th title="Crop Type">Crop Type</th>
-              <th title="Acre">Acre</th>
-              <th title="Farmer Type">Farmer Type</th>
-              <th title="Ready Cash">Ready Cash</th>
-              <th title="Fertilizer(Uram)">Fertilizer</th>
-              <th title="Seed (Vidhai)">Seed</th>
-              <th title="Insecticide(Poochi Marundhu)">Insecticide</th>
-              <th title="Thozhu Uram">Thozhu Uram</th>
-              <th title="Grand Total">Grand Total</th>
-              <th title="Total">Total</th>
-              <th title="Save">Save</th>
-              <th title="Remove">Remove</th>
-            </tr>
-          </thead>
+      <div ref={navBarRef}>
+        <NavBar insertNewRow={insertNewRow} />
+      </div>
+      <div
+        className={styles.tableContainer}
+        style={{
+          height: navBarHeight ? `calc(100vh - ${navBarHeight}px)` : "100vh",
+        }}
+      >
+        <table className={styles.loanCalculatorTable} ref={tableHeaderRef}>
+          <TableHeader />
         </table>
-        <div className={styles.tableScroll}>
+        <div
+          className={styles.tableScroll}
+          style={{
+            height: tableHeaderHeight
+              ? `calc(100vh - ${navBarHeight + tableHeaderHeight}px)`
+              : "550px",
+          }}
+        >
           <table className={styles.loanCalculatorTable}>
             <tbody className={styles.tableBody}>
               {loanValues?.length > 0 ? (
@@ -242,7 +311,13 @@ const LoanCalculator = () => {
                     handleAcreChange={handleAcreChange}
                     setSelectedUID={setSelectedUID}
                     handleFertilizerChange={handleFertilizerChange}
-                    handleDelete={handleDelete}
+                    handleDelete={(uid: any) =>
+                      setDeletePopup((prev: DeletePopupModel) => ({
+                        ...prev,
+                        canShowDeletePopup: true,
+                        selectedUID: uid,
+                      }))
+                    }
                   />
                 ))
               ) : (
@@ -259,6 +334,38 @@ const LoanCalculator = () => {
           </table>
         </div>
       </div>
+      {deletePopup.canShowDeletePopup && (
+        <ConfirmPopup
+          canOpen={deletePopup.canShowDeletePopup}
+          description={deletePopupConfig.description}
+          titleIcon={deletePopupConfig.titleIcon}
+          submitButtonName={deletePopupConfig.submitButtonName}
+          canShowCloseIcon={deletePopupConfig.canShowCloseIcon}
+          title={deletePopupConfig.title}
+          navigateChanges={() =>
+            setDeletePopup((prev: DeletePopupModel) => ({
+              ...prev,
+              canShowDeletePopup: false,
+              selectedUID: "",
+            }))
+          }
+          redirectChanges={() => handleDelete(deletePopup.selectedUID)}
+        />
+      )}
+
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={isOpen}
+        autoHideDuration={2000}
+        onClose={() =>
+          setLoanSnackBar((prev: SnackBarModel) => ({
+            ...prev,
+            isOpen: false,
+          }))
+        }
+        message={message}
+        key={vertical + horizontal}
+      />
     </div>
   );
 };
