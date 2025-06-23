@@ -179,13 +179,9 @@ const LoanCalculator = () => {
             ...loan,
             fertilizer: fertilizerAmount,
             thozhuUram:
-              calculatedThozhuUram < 0
-                ? 0
-                : (currentLoanValue?.thozhuUram ?? 0) + calculatedThozhuUram,
+              (currentLoanValue?.thozhuUram ?? 0) + calculatedThozhuUram,
             totalAmount:
-              calculatedThozhuUram < 0
-                ? currentLoanValue?.totalAmount ?? 0
-                : (currentLoanValue?.totalAmount ?? 0) + calculatedThozhuUram,
+              (currentLoanValue?.totalAmount ?? 0) + calculatedThozhuUram,
           }
         : loan
     );
