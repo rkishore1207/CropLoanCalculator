@@ -7,6 +7,7 @@ const TableHeader = () => {
         <th title="Register Number">Register Number</th>
         <th title="Customer Name">Name</th>
         <th title="Loan Number">Loan Number</th>
+        <th title="Account Number">Account Number</th>
         <th title="Crop Type">Crop Type</th>
         <th title="Acre">Acre</th>
         <th title="Farmer Type">Farmer Type</th>

@@ -26,7 +26,7 @@ namespace CropLoan.Business.Helper
                     new Column { Min = 2, Max = 2, Width = 33d, CustomWidth = true },
                     new Column { Min = 3, Max = 3, Width = 15d, CustomWidth = true },
                     new Column { Min = 4, Max = 4, Width = 25d, CustomWidth = true },
-                    new Column { Min = 5, Max = 5, Width = 15d, CustomWidth = true },
+                    new Column { Min = 5, Max = 5, Width = 25d, CustomWidth = true },
                     new Column { Min = 6, Max = 6, Width = 15d, CustomWidth = true },
                     new Column { Min = 7, Max = 7, Width = 15d, CustomWidth = true },
                     new Column { Min = 8, Max = 8, Width = 15d, CustomWidth = true },
@@ -34,7 +34,8 @@ namespace CropLoan.Business.Helper
                     new Column { Min = 10, Max = 10, Width = 15d, CustomWidth = true },
                     new Column { Min = 11, Max = 11, Width = 15d, CustomWidth = true },
                     new Column { Min = 12, Max = 12, Width = 15d, CustomWidth = true },
-                    new Column { Min = 13, Max = 13, Width = 15d, CustomWidth = true }
+                    new Column { Min = 13, Max = 13, Width = 15d, CustomWidth = true },
+                    new Column { Min = 14, Max = 14, Width = 15d, CustomWidth = true }
                 );
                 ws.Append(columns);
                 ws.Append(sheetData);
@@ -57,6 +58,7 @@ namespace CropLoan.Business.Helper
                     ConstructCell("Member Number", CellValues.String),
                     ConstructCell("Name", CellValues.String),
                     ConstructCell("Loan Number", CellValues.String),
+                    ConstructCell("Account Number", CellValues.String),
                     ConstructCell("Farmer Type", CellValues.String),
                     ConstructCell("Crop Type", CellValues.String),
                     ConstructCell("Acre", CellValues.String),
@@ -78,6 +80,7 @@ namespace CropLoan.Business.Helper
                         ConstructCell(loan.RegisterNumber.ToString(), CellValues.Number),
                         ConstructCell(loan.CustomerName, CellValues.String),
                         ConstructCell(loan.LoanNumber, CellValues.String),
+                        ConstructCell(loan.AccountNumber, CellValues.String),
                         ConstructCell(loan.FarmerType, CellValues.String),
                         ConstructCell(loan.CropTypeName, CellValues.String),
                         ConstructCell(loan.Acre.ToString(), CellValues.String),

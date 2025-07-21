@@ -6,6 +6,7 @@
         public string RegisterNumber { get; set; }
         public string CustomerName { get; set; }
         public string LoanNumber { get; set; }
+        public string AccountNumber { get; set; }
         public int CropTypeId { get; set; }
         public string CropType { get; set; }
         public int FarmerTypeId { get; set; }

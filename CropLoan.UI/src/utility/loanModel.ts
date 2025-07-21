@@ -6,6 +6,7 @@ export interface LoanAmount {
   registerNumber: string;
   customerName: string;
   loanNumber: string;
+  accountNumber: string;
   cropTypeId: number;
   cropTypeName: string;
   acre: number;

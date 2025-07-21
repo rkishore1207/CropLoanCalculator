@@ -113,6 +113,30 @@ const TableRow = ({
       )}
       {selectedUID === loanValue.uid ? (
         <td>
+          <TextInput
+            aria-label="accountNumber"
+            placeholder="Account"
+            className={styles.userInput}
+            value={loanValue.accountNumber}
+            onChange={(event: any) => {
+              const input = event.target.value;
+              if (/^\d{0,9}$/.test(input)) {
+                handleChange(loanValue.uid, "accountNumber", input);
+              }
+            }}
+            inputProps={{
+              maxLength: 9,
+              inputMode: "numeric",
+            }}
+          />
+        </td>
+      ) : (
+        <td title={loanValue.accountNumber?.toString()}>
+          {loanValue.accountNumber}
+        </td>
+      )}
+      {selectedUID === loanValue.uid ? (
+        <td>
           <CropTypeDropdown
             handleDropdownChange={handleCropTypeChange}
             value={loanValue.cropTypeId}
