@@ -24,6 +24,7 @@ import ConfirmPopup from "../../components/ConfirmPopup/ConfirmPopup";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { Snackbar } from "@mui/material";
 import { loanSnackBarMessage } from "../../utility/constants";
+import ColGroup from "../../components/ColGroup/ColGroup";
 
 const LoanCalculator = () => {
   const { loanValues, loanValuesCopy } = useSelector(
@@ -95,6 +96,7 @@ const LoanCalculator = () => {
       registerNumber: "",
       customerName: "",
       loanNumber: "",
+      accountNumber: "",
       cropTypeId: 0,
       cropTypeName: "",
       acre: 0,
@@ -134,11 +136,15 @@ const LoanCalculator = () => {
     const { fertilizer, seed, insecticide, amount } = CropType(cropTypeId);
     const farmer: any = getFarmerType(acre);
 
-    const calculatedFertilizer = fertilizer * acre;
+    const calculatedFertilizer = fertilizer * 0.6 * acre;
+    const calculatedThozhuUram = fertilizer * 0.4 * acre;
     const calculatedSeed = seed * acre;
     const calculatedInsecticide = insecticide * acre;
     const totalByProductsAmount =
-      calculatedFertilizer + calculatedSeed + calculatedInsecticide;
+      calculatedFertilizer +
+      calculatedThozhuUram +
+      calculatedSeed +
+      calculatedInsecticide;
     const readyCash = amount * acre;
     const totalAmount = readyCash + calculatedSeed + calculatedInsecticide;
     const calculatedGrandTotal = readyCash + totalByProductsAmount;
@@ -155,6 +161,7 @@ const LoanCalculator = () => {
             farmerType: farmer.name,
             readyCash: Math.round(readyCash),
             fertilizer: Math.round(calculatedFertilizer),
+            thozhuUram: Math.round(calculatedThozhuUram),
             seed: Math.round(calculatedSeed),
             insecticide: Math.round(calculatedInsecticide),
             totalAmount: Math.round(totalAmount),
@@ -285,6 +292,7 @@ const LoanCalculator = () => {
         }}
       >
         <table className={styles.loanCalculatorTable} ref={tableHeaderRef}>
+          <ColGroup />
           <TableHeader />
         </table>
         <div
@@ -296,6 +304,7 @@ const LoanCalculator = () => {
           }}
         >
           <table className={styles.loanCalculatorTable}>
+            <ColGroup />
             <tbody className={styles.tableBody}>
               {loanValues?.length > 0 ? (
                 loanValues.map((loanValue: LoanAmount) => (

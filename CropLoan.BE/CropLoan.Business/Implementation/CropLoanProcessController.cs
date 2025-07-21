@@ -85,7 +85,7 @@ namespace CropLoan.Business.Implementation
 
             var loans = await _cropLoanRepository.GetAllLoans();
             var workBookOpenXml = new WorkbookOpenXML();
-            workBookOpenXml.ExportToExcel(loans, fileName);
+            workBookOpenXml.ExportToExcel(loans.OrderByDescending(x => x.CreatedOn).ToList(), fileName);
         }
 
         /// <summary>
