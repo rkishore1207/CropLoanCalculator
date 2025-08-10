@@ -59,4 +59,5 @@ export const loanSnackBarMessage = {
   saveSuccess: "Loan Saved Successfully",
   failed: "Failed",
   deleteSuccess: "Loan Deleted Successfully",
+  serviceDown: "Service Down. Please Run it and Refresh the browser",
 };

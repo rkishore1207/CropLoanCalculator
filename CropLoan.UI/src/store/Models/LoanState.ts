@@ -5,4 +5,5 @@ export interface LoanState {
   loanValuesCopy: LoanAmount[];
   loanFilter: LoanFilter;
   isAddButtonDisabled: boolean;
+  isServiceDown: boolean;
 }

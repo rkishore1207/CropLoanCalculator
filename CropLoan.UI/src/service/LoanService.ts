@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from "axios";
+import api from "./interceptor";
 import type { LoanAmount, LoanFilter } from "../utility/loanModel";
-
-const BASE_URL = "https://localhost:7064/api";
 
 const apiEntity = {
   CropLoan: "/cropLoan",
@@ -10,33 +8,28 @@ const apiEntity = {
 
 class LoanService {
   async getLoans() {
-    const response = await axios.get(BASE_URL + apiEntity.CropLoan + "/loans");
+    const response = await api.get(apiEntity.CropLoan + "/loans");
     return response.data;
   }
 
   async addOrUpdateLoan(payload: LoanAmount) {
-    return await axios.post(
-      BASE_URL + apiEntity.CropLoan + "/addOrUpdateLoan",
-      payload
-    );
+    return await api.post(apiEntity.CropLoan + "/addOrUpdateLoan", payload);
   }
 
   async getLoansWithFilter(payload: LoanFilter) {
-    const response = await axios.post(
-      BASE_URL + apiEntity.CropLoan + "/loansWithFilter",
+    const response = await api.post(
+      apiEntity.CropLoan + "/loansWithFilter",
       payload
     );
     return response.data;
   }
 
   async generateExcel() {
-    await axios.get(BASE_URL + apiEntity.CropLoan + "/generateExcel");
+    await api.get(apiEntity.CropLoan + "/generateExcel");
   }
 
   async deleteLoan(loanUID: any) {
-    await axios.delete(
-      BASE_URL + apiEntity.CropLoan + "/" + loanUID + "/deleteLoan"
-    );
+    await api.delete(apiEntity.CropLoan + "/" + loanUID + "/deleteLoan");
   }
 }
 

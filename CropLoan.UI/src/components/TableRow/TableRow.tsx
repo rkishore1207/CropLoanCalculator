@@ -8,9 +8,11 @@ import SaveIcon from "@mui/icons-material/Save";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setAddButtonVisibility } from "../../store/LoanStore/loan.actions";
 import { Tooltip } from "@mui/material";
+import type { ReduxState } from "../../store/store";
+import { loanSnackBarMessage } from "../../utility/constants";
 
 interface TableRowProps {
   loanValue: LoanAmount;
@@ -40,6 +42,7 @@ const TableRow = ({
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isSaveDisabled, setIsSaveDisabled] = useState<boolean>(true);
   const dispatch = useDispatch();
+  const { isServiceDown } = useSelector((state: ReduxState) => state.loan);
 
   useEffect(() => {
     if (!isEdit) {
@@ -198,13 +201,19 @@ const TableRow = ({
       {selectedUID === loanValue.uid || isEdit ? (
         <td>
           <span onClick={() => handleSaveClick(loanValue.uid)}>
-            <Tooltip title="Save" placement="top" arrow={true}>
+            <Tooltip
+              title={isServiceDown ? loanSnackBarMessage.serviceDown : "Save"}
+              placement="top"
+              arrow={true}
+            >
               <SaveIcon
                 className={
-                  isSaveDisabled ? styles.saveLoanDisable : styles.saveLoan
+                  isSaveDisabled || isServiceDown
+                    ? styles.saveLoanDisable
+                    : styles.saveLoan
                 }
                 sx={{
-                  color: isSaveDisabled ? "#ccc" : "#000",
+                  color: isSaveDisabled || isServiceDown ? "#ccc" : "#000",
                 }}
               />
             </Tooltip>
