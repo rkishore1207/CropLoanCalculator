@@ -5,6 +5,7 @@ import {
   SET_FILTER_VALUES,
   SET_LOAN_COPY_VALUES,
   SET_LOAN_VALUES,
+  SET_SERVICE_DOWN,
 } from "./loan.types";
 
 const initialState: LoanState = {
@@ -19,6 +20,7 @@ const initialState: LoanState = {
     farmerTypeId: 0,
   },
   isAddButtonDisabled: false,
+  isServiceDown: false,
 };
 
 export const loanReducer = (state = initialState, action: any): LoanState => {
@@ -42,6 +44,11 @@ export const loanReducer = (state = initialState, action: any): LoanState => {
       return {
         ...state,
         isAddButtonDisabled: action.payload,
+      };
+    case SET_SERVICE_DOWN:
+      return {
+        ...state,
+        isServiceDown: action.payload,
       };
     default:
       return state;

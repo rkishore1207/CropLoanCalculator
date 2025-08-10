@@ -16,7 +16,7 @@ import type { ReduxState } from "../../store/store";
 import { Fragment, useState } from "react";
 import Loader from "../Loader/Loader";
 import { Snackbar, Tooltip } from "@mui/material";
-import { ExcelMessage } from "../../utility/constants";
+import { ExcelMessage, loanSnackBarMessage } from "../../utility/constants";
 
 interface NavBarProps {
   insertNewRow: () => void;
@@ -26,7 +26,7 @@ const NavBar = ({ insertNewRow }: NavBarProps) => {
   // const [isFilterClicked, setIsFilterClicked] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const { isAddButtonDisabled } = useSelector(
+  const { isAddButtonDisabled, isServiceDown } = useSelector(
     (state: ReduxState) => state.loan
   );
   const [excelSnackBar, setExcelSnackBar] = useState<SnackBarModel>({
@@ -48,7 +48,7 @@ const NavBar = ({ insertNewRow }: NavBarProps) => {
   };
 
   const handleAddButtonClick = () => {
-    if (!isAddButtonDisabled) {
+    if (!isAddButtonDisabled && !isServiceDown) {
       insertNewRow();
     }
   };
@@ -89,14 +89,23 @@ const NavBar = ({ insertNewRow }: NavBarProps) => {
             </Tooltip>
           </div>
           <div onClick={handleAddButtonClick}>
-            <Tooltip title="Add Row" placement="top" arrow={true}>
+            <Tooltip
+              title={
+                isServiceDown ? loanSnackBarMessage.serviceDown : "Add Row"
+              }
+              placement="top"
+              arrow={true}
+            >
               <AddOutlinedIcon
                 className={styles.addButton}
                 sx={{
                   height: "35px",
                   width: "35px",
-                  color: isAddButtonDisabled ? "#ccc" : "#000",
-                  cursor: isAddButtonDisabled ? "not-allowed" : "pointer",
+                  color: isAddButtonDisabled || isServiceDown ? "#ccc" : "#000",
+                  cursor:
+                    isAddButtonDisabled || isServiceDown
+                      ? "not-allowed"
+                      : "pointer",
                 }}
               />
             </Tooltip>

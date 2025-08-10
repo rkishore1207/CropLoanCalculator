@@ -27,7 +27,7 @@ import { loanSnackBarMessage } from "../../utility/constants";
 import ColGroup from "../../components/ColGroup/ColGroup";
 
 const LoanCalculator = () => {
-  const { loanValues, loanValuesCopy } = useSelector(
+  const { loanValues, loanValuesCopy, isServiceDown } = useSelector(
     (state: ReduxState) => state.loan
   );
   const dispatch = useDispatch();
@@ -119,7 +119,7 @@ const LoanCalculator = () => {
     const handleAddRow = (event: KeyboardEvent) => {
       if (event.ctrlKey && (event.key === "z" || event.key === "Z")) {
         event.preventDefault();
-        if (selectedUID === "" || selectedUID === null) {
+        if (!isServiceDown && (selectedUID === "" || selectedUID === null)) {
           insertNewRow();
         }
       }
@@ -130,7 +130,7 @@ const LoanCalculator = () => {
     return () => {
       window.removeEventListener("keydown", handleAddRow);
     };
-  }, [insertNewRow, selectedUID]);
+  }, [insertNewRow, selectedUID, isServiceDown]);
 
   const handleAcreChange = (uid: any, acre: any, cropTypeId: any) => {
     const { fertilizer, seed, insecticide, amount } = CropType(cropTypeId);
@@ -373,6 +373,14 @@ const LoanCalculator = () => {
         }
         message={message}
         key={vertical + horizontal}
+      />
+
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "left" }}
+        open={isServiceDown}
+        message={loanSnackBarMessage.serviceDown}
+        key="topleft"
+        autoHideDuration={null}
       />
     </div>
   );

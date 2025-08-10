@@ -4,6 +4,7 @@ import {
   SET_FILTER_VALUES,
   SET_LOAN_COPY_VALUES,
   SET_LOAN_VALUES,
+  SET_SERVICE_DOWN,
 } from "./loan.types";
 
 export const setLoanValues = (data: LoanAmount[]) => {
@@ -30,6 +31,13 @@ export const setFilterValues = (data: LoanFilter) => {
 export const setAddButtonVisibility = (value: boolean) => {
   return {
     type: SET_ADDBUTTON_VISIBILITY,
+    payload: value,
+  };
+};
+
+export const setServiceDown = (value: boolean) => {
+  return {
+    type: SET_SERVICE_DOWN,
     payload: value,
   };
 };
