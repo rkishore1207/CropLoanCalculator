@@ -53,5 +53,27 @@ namespace CropLoan.Api.Controllers
         {
             await _cropLoanProcessController.DeleteLoan(loanUID);
         }
+
+        [HttpGet]
+        [Route("pages")]
+        public async Task<IActionResult> GetPages()
+        {
+            var pages = await _cropLoanProcessController.GetPages();
+            return Ok(pages);
+        }
+
+        [HttpPost]
+        [Route("addOrUpdatePage")]
+        public async Task AddOrUpdatePage([FromBody] PageRequestModel pageRequest)
+        {
+            await _cropLoanProcessController.AddOrUpdatePage(pageRequest);
+        }
+
+        [HttpDelete]
+        [Route("{pageUID}/deletePage")]
+        public async Task DeletePage(Guid pageUID)
+        {
+            await _cropLoanProcessController.DeletePage(pageUID);
+        }
     }
 }

@@ -57,5 +57,36 @@ namespace CropLoan.Data.Implementation
             var uidParam = SpParameter.Create("LoanUID", loanUID, ParameterDirection.Input, SqlDbType.UniqueIdentifier);
             await ExecuteStoredProcedureNonQueryAsync("[dbo].[DeleteLoan]", uidParam);
         }
+
+        /// <summary>
+        /// Getting all saved Pages
+        /// </summary>
+        /// <returns>List of Page Entities</returns>
+        public async Task<List<PageEntity>> GetPages()
+        {
+            var pages = await ExecuteStoredProcedureAsync<PageEntity>("[dbo].[GetPages]");
+            return pages;
+        }
+
+        /// <summary>
+        /// Saving the Page Entry
+        /// </summary>
+        /// <returns></returns>
+        public async Task AddOrUpdatePage(PageEntity pageEntity)
+        {
+            var uidParam = SpParameter.Create("UID", pageEntity.UID, ParameterDirection.Input, SqlDbType.UniqueIdentifier);
+            var nameParam = SpParameter.Create("Name", pageEntity.Name, ParameterDirection.Input, SqlDbType.NVarChar);            
+            await ExecuteStoredProcedureNonQueryAsync("[dbo].[AddOrUpdatePage]", uidParam, nameParam);
+        }
+
+        /// <summary>
+        /// Deleting the Page records
+        /// </summary>
+        /// <returns>Loan UID</returns>
+        public async Task DeletePage(Guid pageUID)
+        {
+            var uidParam = SpParameter.Create("PageUID", pageUID, ParameterDirection.Input, SqlDbType.UniqueIdentifier);
+            await ExecuteStoredProcedureNonQueryAsync("[dbo].[DeletePageData]", uidParam);
+        }
     }
 }

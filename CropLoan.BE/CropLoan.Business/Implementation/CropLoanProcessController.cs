@@ -5,8 +5,8 @@ using CropLoan.Data.Interface;
 using CropLoan.Model.Entity;
 using CropLoan.Model.Request;
 using CropLoan.Model.View;
-using DocumentFormat.OpenXml.Spreadsheet;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 
 namespace CropLoan.Business.Implementation
 {
@@ -37,11 +37,11 @@ namespace CropLoan.Business.Implementation
         /// <summary>
         /// Adding or Updating Loan Request
         /// </summary>
-        /// <param name="cropLoanRequest"></param>
+        /// <param name="pageRequest"></param>
         /// <returns></returns>
-        public async Task AddOrUpdateLoan(CropLoanRequestModel cropLoanRequest)
+        public async Task AddOrUpdateLoan(CropLoanRequestModel pageRequest)
         {
-            var cropEntity = _mapper.Map<CropLoanEntityModel>(cropLoanRequest);
+            var cropEntity = _mapper.Map<CropLoanEntityModel>(pageRequest);
             await _cropLoanRepository.AddOrUpdateLoan(cropEntity);
         }
 
@@ -95,6 +95,41 @@ namespace CropLoan.Business.Implementation
         public async Task DeleteLoan(Guid loanUID)
         {
             await _cropLoanRepository.DeleteLoan(loanUID);
+        }
+
+        /// <summary>
+        /// Getting all Pages
+        /// </summary>
+        /// <returns>List of Pages</returns>
+        public async Task<List<PageViewModel>> GetPages()
+        {
+            var pages = await _cropLoanRepository.GetPages();
+            var pageViews = _mapper.Map<List<PageViewModel>>(pages.OrderByDescending(x => x.CreatedOn));
+            return pageViews;
+        }
+
+        /// <summary>
+        /// Adding or Updating Page Request
+        /// </summary>
+        /// <param name="pageRequest"></param>
+        /// <returns></returns>
+        public async Task AddOrUpdatePage(PageRequestModel pageRequest)
+        {
+            var pages = await _cropLoanRepository.GetPages();
+            var isNameExists = pages?.Any(x => x.Name.ToLower() == pageRequest.Name.ToLower()) ?? false;
+            if (isNameExists)            
+                throw new DuplicateNameException();            
+            var pageEntity = _mapper.Map<PageEntity>(pageRequest);
+            await _cropLoanRepository.AddOrUpdatePage(pageEntity);
+        }
+
+        /// <summary>
+        /// Deleting Page
+        /// </summary>
+        /// <returns>PageUID</returns>
+        public async Task DeletePage(Guid pageUID)
+        {
+            await _cropLoanRepository.DeletePage(pageUID);
         }
     }
 }

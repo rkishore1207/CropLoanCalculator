@@ -10,5 +10,8 @@ namespace CropLoan.Business.Interface
         Task<List<CropLoanViewModel>> GetLoansWithFilter(LoanFilterRequest filterRequest);
         Task GenerateExcel();
         Task DeleteLoan(Guid loanUID);
+        Task<List<PageViewModel>> GetPages();
+        Task AddOrUpdatePage(PageRequestModel pageRequest);
+        Task DeletePage(Guid pageUID);
     }
 }
