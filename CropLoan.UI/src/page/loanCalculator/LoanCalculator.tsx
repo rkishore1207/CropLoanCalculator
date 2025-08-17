@@ -139,15 +139,18 @@ const LoanCalculator = () => {
     const calculatedFertilizer = fertilizer * 0.6 * acre;
     const calculatedThozhuUram = fertilizer * 0.4 * acre;
     const calculatedSeed = seed * acre;
-    const calculatedInsecticide = insecticide * acre;
+    let calculatedInsecticide = insecticide * acre;
     const totalByProductsAmount =
       calculatedFertilizer +
       calculatedThozhuUram +
       calculatedSeed +
       calculatedInsecticide;
     const readyCash = amount * acre;
+    const grandTotal = readyCash + totalByProductsAmount;
+    const grandTotalRemainder = grandTotal > 100 ? grandTotal % 100 : 0;
+    const calculatedGrandTotal = grandTotal - grandTotalRemainder;
+    calculatedInsecticide = calculatedInsecticide - grandTotalRemainder;
     const totalAmount = readyCash + calculatedSeed + calculatedInsecticide;
-    const calculatedGrandTotal = readyCash + totalByProductsAmount;
 
     const updatedLoanValues = loanValues?.map((loan: LoanAmount) =>
       loan.uid === uid
