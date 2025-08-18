@@ -18,10 +18,10 @@ namespace CropLoan.Api.Controllers
         }
 
         [HttpGet]
-        [Route("loans")]
-        public async Task<IActionResult> GetAllLoans()
+        [Route("page/{pageUID}/loans")]
+        public async Task<IActionResult> GetLoansByPageUID(Guid pageUID)
         {
-            var loans = await _cropLoanProcessController.GetAllLoans();
+            var loans = await _cropLoanProcessController.GetLoansByPageUID(pageUID);
             return Ok(loans);
         }
 
@@ -41,10 +41,10 @@ namespace CropLoan.Api.Controllers
         }
 
         [HttpGet]
-        [Route("generateExcel")]
-        public async Task GenerateExcel()
+        [Route("page/{pageUID}/generateExcel")]
+        public async Task GenerateExcel(Guid pageUID)
         {
-            await _cropLoanProcessController.GenerateExcel();
+            await _cropLoanProcessController.GenerateExcelByPageUID(pageUID);
         }
 
         [HttpDelete]

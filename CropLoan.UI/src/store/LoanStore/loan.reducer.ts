@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { LoanState } from "../Models/LoanState";
 import {
+  CAN_HIDE_NAV_BUTTONS,
   SET_ADDBUTTON_VISIBILITY,
+  SET_DUPLICATE_PAGE_NAME,
   SET_FILTER_VALUES,
   SET_LOAN_COPY_VALUES,
   SET_LOAN_VALUES,
-  SET_SERVICE_DOWN,
+  SET_PAGES,
+  SET_SELECTED_PAGE,
 } from "./loan.types";
 
 const initialState: LoanState = {
@@ -20,7 +23,10 @@ const initialState: LoanState = {
     farmerTypeId: 0,
   },
   isAddButtonDisabled: false,
-  isServiceDown: false,
+  canHideNavButtons: false,
+  selectedPage: "",
+  pages: [],
+  isDuplicatePageName: false,
 };
 
 export const loanReducer = (state = initialState, action: any): LoanState => {
@@ -45,10 +51,25 @@ export const loanReducer = (state = initialState, action: any): LoanState => {
         ...state,
         isAddButtonDisabled: action.payload,
       };
-    case SET_SERVICE_DOWN:
+    case CAN_HIDE_NAV_BUTTONS:
       return {
         ...state,
-        isServiceDown: action.payload,
+        canHideNavButtons: action.payload,
+      };
+    case SET_PAGES:
+      return {
+        ...state,
+        pages: action.payload,
+      };
+    case SET_SELECTED_PAGE:
+      return {
+        ...state,
+        selectedPage: action.payload,
+      };
+    case SET_DUPLICATE_PAGE_NAME:
+      return {
+        ...state,
+        isDuplicatePageName: action.payload,
       };
     default:
       return state;

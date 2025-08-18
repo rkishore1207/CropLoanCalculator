@@ -18,9 +18,10 @@ namespace CropLoan.Data.Implementation
         /// Getting all saved crop loans
         /// </summary>
         /// <returns>List of Loan Entities</returns>
-        public async Task<List<CropLoanEntityModel>> GetAllLoans()
+        public async Task<List<CropLoanEntityModel>> GetLoansByPageUID(Guid pageUID)
         {
-            var loans = await ExecuteStoredProcedureAsync<CropLoanEntityModel>("[dbo].[GetAllLoans]");
+            var uidParam = SpParameter.Create("PageUID", pageUID, ParameterDirection.Input, SqlDbType.UniqueIdentifier);
+            var loans = await ExecuteStoredProcedureAsync<CropLoanEntityModel>("[dbo].[GetAllLoans]", uidParam);
             return loans;
         }
 
@@ -31,6 +32,7 @@ namespace CropLoan.Data.Implementation
         public async Task AddOrUpdateLoan(CropLoanEntityModel cropLoanEntity)
         {
             var uidParam = SpParameter.Create("uid", cropLoanEntity.UID, ParameterDirection.Input, SqlDbType.UniqueIdentifier);
+            var pageUIDParam = SpParameter.Create("PageUID", cropLoanEntity.PageUID, ParameterDirection.Input, SqlDbType.UniqueIdentifier);
             var registerNumberParam = SpParameter.Create("RegisterNumber", cropLoanEntity.RegisterNumber, ParameterDirection.Input, SqlDbType.NVarChar);
             var nameParam = SpParameter.Create("Name", cropLoanEntity.CustomerName, ParameterDirection.Input, SqlDbType.NVarChar);
             var loanNumberParam = SpParameter.Create("LoanNumber", cropLoanEntity.LoanNumber, ParameterDirection.Input, SqlDbType.NVarChar);
@@ -45,7 +47,7 @@ namespace CropLoan.Data.Implementation
             var readyCashParam = SpParameter.Create("ReadyCash", cropLoanEntity.ReadyCash, ParameterDirection.Input, SqlDbType.Decimal);
             var grandTotalParam = SpParameter.Create("GrandTotal", cropLoanEntity.GrandTotal, ParameterDirection.Input, SqlDbType.Decimal);
             var totalParam = SpParameter.Create("Total", cropLoanEntity.TotalAmount, ParameterDirection.Input, SqlDbType.Decimal);
-            await ExecuteStoredProcedureNonQueryAsync("[dbo].[AddOrUpdateLoan]",uidParam, registerNumberParam, nameParam, loanNumberParam, accountNumberParam, cropTypeParam, farmerTypeParam, acreParam, fertilizerParam, seedParam, insecticideParam, thozhuUram, readyCashParam, grandTotalParam, totalParam);
+            await ExecuteStoredProcedureNonQueryAsync("[dbo].[AddOrUpdateLoan]",uidParam, registerNumberParam, nameParam, loanNumberParam, accountNumberParam, cropTypeParam, farmerTypeParam, acreParam, fertilizerParam, seedParam, insecticideParam, thozhuUram, readyCashParam, grandTotalParam, totalParam, pageUIDParam);
         }
 
         /// <summary>

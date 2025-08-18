@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import { store } from "../store/store";
-import { setServiceDown } from "../store/LoanStore/loan.actions";
+import {
+  setDuplicatePageName,
+  setHideNaveButton,
+} from "../store/LoanStore/loan.actions";
 
 const BASE_URL = "https://localhost:7064/api";
 
@@ -20,12 +23,14 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response: any) => {
-    store.dispatch(setServiceDown(false));
+    store.dispatch(setHideNaveButton(false));
     return response;
   },
   (error: any) => {
     if (error.code === "ERR_NETWORK") {
-      store.dispatch(setServiceDown(true));
+      store.dispatch(setHideNaveButton(true));
+    } else if (error.response?.data?.errorCode === "ERR_DUPLICATE_NAME") {
+      store.dispatch(setDuplicatePageName(true));
     }
     return Promise.reject(error);
   }

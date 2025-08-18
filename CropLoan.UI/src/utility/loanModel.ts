@@ -4,6 +4,7 @@ import type { SnackbarOrigin } from "@mui/material";
 export interface LoanAmount {
   uid: string;
   registerNumber: string;
+  pageUID: string;
   customerName: string;
   loanNumber: string;
   accountNumber: string;
@@ -58,4 +59,10 @@ export interface SnackBarModel extends SnackbarOrigin {
 export interface DeletePopupModel {
   canShowDeletePopup: boolean;
   selectedUID: any;
+  isSingleDelete: boolean;
+}
+
+export interface Page {
+  uid: string;
+  name: string;
 }

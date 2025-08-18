@@ -1,10 +1,13 @@
-import type { LoanAmount, LoanFilter } from "../../utility/loanModel";
+import type { LoanAmount, LoanFilter, Page } from "../../utility/loanModel";
 import {
+  CAN_HIDE_NAV_BUTTONS,
   SET_ADDBUTTON_VISIBILITY,
+  SET_DUPLICATE_PAGE_NAME,
   SET_FILTER_VALUES,
   SET_LOAN_COPY_VALUES,
   SET_LOAN_VALUES,
-  SET_SERVICE_DOWN,
+  SET_PAGES,
+  SET_SELECTED_PAGE,
 } from "./loan.types";
 
 export const setLoanValues = (data: LoanAmount[]) => {
@@ -35,9 +38,30 @@ export const setAddButtonVisibility = (value: boolean) => {
   };
 };
 
-export const setServiceDown = (value: boolean) => {
+export const setHideNaveButton = (value: boolean) => {
   return {
-    type: SET_SERVICE_DOWN,
+    type: CAN_HIDE_NAV_BUTTONS,
+    payload: value,
+  };
+};
+
+export const setPages = (value: Page[]) => {
+  return {
+    type: SET_PAGES,
+    payload: value,
+  };
+};
+
+export const setSelectedPage = (value: string) => {
+  return {
+    type: SET_SELECTED_PAGE,
+    payload: value,
+  };
+};
+
+export const setDuplicatePageName = (value: boolean) => {
+  return {
+    type: SET_DUPLICATE_PAGE_NAME,
     payload: value,
   };
 };

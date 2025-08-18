@@ -5,10 +5,10 @@ namespace CropLoan.Business.Interface
 {
     public interface ICropLoanProcessController
     {
-        Task<List<CropLoanViewModel>> GetAllLoans();
+        Task<List<CropLoanViewModel>> GetLoansByPageUID(Guid pageUID);
         Task AddOrUpdateLoan(CropLoanRequestModel cropLoanRequest);
         Task<List<CropLoanViewModel>> GetLoansWithFilter(LoanFilterRequest filterRequest);
-        Task GenerateExcel();
+        Task GenerateExcelByPageUID(Guid pageUID);
         Task DeleteLoan(Guid loanUID);
         Task<List<PageViewModel>> GetPages();
         Task AddOrUpdatePage(PageRequestModel pageRequest);

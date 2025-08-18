@@ -27,9 +27,9 @@ namespace CropLoan.Business.Implementation
         /// Getting all loans
         /// </summary>
         /// <returns>List of Loans</returns>
-        public async Task<List<CropLoanViewModel>> GetAllLoans()
+        public async Task<List<CropLoanViewModel>> GetLoansByPageUID(Guid pageUID)
         {
-            var loans = await _cropLoanRepository.GetAllLoans();
+            var loans = await _cropLoanRepository.GetLoansByPageUID(pageUID);
             var loanViews = _mapper.Map<List<CropLoanViewModel>>(loans.OrderByDescending(x => x.CreatedOn));
             return loanViews;
         }
@@ -56,7 +56,7 @@ namespace CropLoan.Business.Implementation
             var results = new List<ValidationResult>();
             bool isValidDate = Validator.TryValidateObject(filterRequest.Date, context, results, validateAllProperties: true);
 
-            var loans = await _cropLoanRepository.GetAllLoans();
+            var loans = await _cropLoanRepository.GetLoansByPageUID(Guid.Empty);
             var filteredLoans = loans;
 
             if (isValidDate)
@@ -77,15 +77,16 @@ namespace CropLoan.Business.Implementation
         /// </summary>
         /// <param name="Generating Excel"></param>
         /// <returns></returns>
-        public async Task GenerateExcel()
+        public async Task GenerateExcelByPageUID(Guid pageUID)
         {
             string timestamp = DateTime.Now.ToString("dd-MM-yyyy HH-mm-ss");
             string fileName = $"D:\\Exports\\{timestamp}-Loans.xlsx";
             Directory.CreateDirectory(Path.GetDirectoryName(fileName));
 
-            var loans = await _cropLoanRepository.GetAllLoans();
+            var loans = await _cropLoanRepository.GetLoansByPageUID(pageUID);
+            loans = loans.OrderBy(x => x.CreatedOn).ToList();
             var workBookOpenXml = new WorkbookOpenXML();
-            workBookOpenXml.ExportToExcel(loans.OrderByDescending(x => x.CreatedOn).ToList(), fileName);
+            workBookOpenXml.ExportToExcel(loans, fileName);
         }
 
         /// <summary>
@@ -118,7 +119,7 @@ namespace CropLoan.Business.Implementation
             var pages = await _cropLoanRepository.GetPages();
             var isNameExists = pages?.Any(x => x.Name.ToLower() == pageRequest.Name.ToLower()) ?? false;
             if (isNameExists)            
-                throw new DuplicateNameException();            
+                throw new BusinessException("ERR_DUPLICATE_NAME", "Page name already exists");
             var pageEntity = _mapper.Map<PageEntity>(pageRequest);
             await _cropLoanRepository.AddOrUpdatePage(pageEntity);
         }

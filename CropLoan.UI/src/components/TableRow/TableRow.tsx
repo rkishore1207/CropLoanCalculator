@@ -42,7 +42,7 @@ const TableRow = ({
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isSaveDisabled, setIsSaveDisabled] = useState<boolean>(true);
   const dispatch = useDispatch();
-  const { isServiceDown } = useSelector((state: ReduxState) => state.loan);
+  const { canHideNavButtons } = useSelector((state: ReduxState) => state.loan);
 
   useEffect(() => {
     if (!isEdit) {
@@ -202,18 +202,20 @@ const TableRow = ({
         <td>
           <span onClick={() => handleSaveClick(loanValue.uid)}>
             <Tooltip
-              title={isServiceDown ? loanSnackBarMessage.serviceDown : "Save"}
+              title={
+                canHideNavButtons ? loanSnackBarMessage.serviceDown : "Save"
+              }
               placement="top"
               arrow={true}
             >
               <SaveIcon
                 className={
-                  isSaveDisabled || isServiceDown
+                  isSaveDisabled || canHideNavButtons
                     ? styles.saveLoanDisable
                     : styles.saveLoan
                 }
                 sx={{
-                  color: isSaveDisabled || isServiceDown ? "#ccc" : "#000",
+                  color: isSaveDisabled || canHideNavButtons ? "#ccc" : "#000",
                 }}
               />
             </Tooltip>
