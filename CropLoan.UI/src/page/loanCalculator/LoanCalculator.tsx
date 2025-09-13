@@ -4,6 +4,7 @@ import styles from "./LoanCalculator.module.css";
 import type {
   DeletePopupModel,
   LoanAmount,
+  Page,
   SnackBarModel,
 } from "../../utility/loanModel";
 import { v4 as uuidv4 } from "uuid";
@@ -18,18 +19,18 @@ import {
   setAddButtonVisibility,
   setLoanCopyValues,
   setLoanValues,
+  setPages,
 } from "../../store/LoanStore/loan.actions";
 import TableHeader from "./tableHeader/TableHeader";
 import ConfirmPopup from "../../components/ConfirmPopup/ConfirmPopup";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { Snackbar } from "@mui/material";
-import { loanSnackBarMessage } from "../../utility/constants";
+import { getEmptyGuid, loanSnackBarMessage } from "../../utility/constants";
 import ColGroup from "../../components/ColGroup/ColGroup";
 
 const LoanCalculator = () => {
-  const { loanValues, loanValuesCopy, isServiceDown } = useSelector(
-    (state: ReduxState) => state.loan
-  );
+  const { loanValues, loanValuesCopy, canHideNavButtons, selectedPage } =
+    useSelector((state: ReduxState) => state.loan);
   const dispatch = useDispatch();
   const [selectedUID, setSelectedUID] = useState<string>("");
   const [navBarHeight, setNavBarHeight] = useState<any>(null);
@@ -39,6 +40,7 @@ const LoanCalculator = () => {
   const [deletePopup, setDeletePopup] = useState<DeletePopupModel>({
     canShowDeletePopup: false,
     selectedUID: "",
+    isSingleDelete: true,
   });
   const [loanSnackBar, setLoanSnackBar] = useState<SnackBarModel>({
     isOpen: false,
@@ -57,21 +59,8 @@ const LoanCalculator = () => {
   };
 
   useEffect(() => {
-    const getLoans = async () => {
-      await LoanService.getLoans()
-        .then((response: LoanAmount[]) => {
-          if (response?.length > 0) {
-            dispatch(setLoanValues(response));
-            dispatch(setLoanCopyValues(response));
-          }
-        })
-        .catch((error: any) => {
-          console.log(error);
-        });
-    };
-
-    getLoans();
-  }, [dispatch]);
+    if (selectedPage) getLoans();
+  }, [selectedPage]);
 
   useEffect(() => {
     // To calculate the height of the table container by subtracting the top nav bar's height
@@ -87,6 +76,18 @@ const LoanCalculator = () => {
     }
   }, [navBarHeight, tableHeaderHeight]);
 
+  const getLoans = async () => {
+    await LoanService.getLoans(selectedPage || getEmptyGuid())
+      .then((response: LoanAmount[]) => {
+        dispatch(setLoanValues(response));
+        dispatch(setLoanCopyValues(response));
+        dispatch(setAddButtonVisibility(false));
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+  };
+
   const insertNewRow = useCallback(() => {
     const newUUID = uuidv4();
     setSelectedUID(newUUID);
@@ -94,6 +95,7 @@ const LoanCalculator = () => {
     const newLoanAmount: LoanAmount = {
       uid: newUUID,
       registerNumber: "",
+      pageUID: selectedPage,
       customerName: "",
       loanNumber: "",
       accountNumber: "",
@@ -113,13 +115,16 @@ const LoanCalculator = () => {
     const updatedLoanValues = [newLoanAmount, ...loanValues];
     dispatch(setLoanValues(updatedLoanValues));
     dispatch(setLoanCopyValues(updatedLoanValues));
-  }, [loanValues, dispatch]);
+  }, [loanValues, selectedPage, dispatch]);
 
   useEffect(() => {
     const handleAddRow = (event: KeyboardEvent) => {
       if (event.ctrlKey && (event.key === "z" || event.key === "Z")) {
         event.preventDefault();
-        if (!isServiceDown && (selectedUID === "" || selectedUID === null)) {
+        if (
+          !canHideNavButtons &&
+          (selectedUID === "" || selectedUID === null)
+        ) {
           insertNewRow();
         }
       }
@@ -130,7 +135,7 @@ const LoanCalculator = () => {
     return () => {
       window.removeEventListener("keydown", handleAddRow);
     };
-  }, [insertNewRow, selectedUID, isServiceDown]);
+  }, [insertNewRow, selectedUID, canHideNavButtons]);
 
   const handleAcreChange = (uid: any, acre: any, cropTypeId: any) => {
     const { fertilizer, seed, insecticide, amount } = CropType(cropTypeId);
@@ -214,7 +219,24 @@ const LoanCalculator = () => {
       ...prev,
       canShowDeletePopup: false,
       selectedUID: "",
+      isSingleDelete: true,
     }));
+
+    if (!deletePopup.isSingleDelete) {
+      await LoanService.deletePage(deletePopup.selectedUID)
+        .then(async () => {
+          await LoanService.getPages()
+            .then((response: Page[]) => {
+              dispatch(setPages(response));
+              getLoans();
+            })
+            .catch((error: any) => {
+              console.error("Error fetching loans with filter:", error);
+            });
+        })
+        .catch(() => {});
+      return;
+    }
 
     const updatedLoanValues = loanValues.filter(
       (loan: LoanAmount) => loan.uid !== uid
@@ -286,7 +308,17 @@ const LoanCalculator = () => {
   return (
     <div>
       <div ref={navBarRef}>
-        <NavBar insertNewRow={insertNewRow} />
+        <NavBar
+          insertNewRow={insertNewRow}
+          handleDeleteAll={(uid: any) =>
+            setDeletePopup((prev: DeletePopupModel) => ({
+              ...prev,
+              canShowDeletePopup: true,
+              selectedUID: uid,
+              isSingleDelete: false,
+            }))
+          }
+        />
       </div>
       <div
         className={styles.tableContainer}
@@ -358,6 +390,7 @@ const LoanCalculator = () => {
               ...prev,
               canShowDeletePopup: false,
               selectedUID: "",
+              isSingleDelete: true,
             }))
           }
           redirectChanges={() => handleDelete(deletePopup.selectedUID)}
@@ -380,7 +413,7 @@ const LoanCalculator = () => {
 
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "left" }}
-        open={isServiceDown}
+        open={canHideNavButtons}
         message={loanSnackBarMessage.serviceDown}
         key="topleft"
         autoHideDuration={null}

@@ -1,0 +1,36 @@
+.deleteLoan {
+  cursor: pointer;
+  padding: 5px;
+  &:hover {
+    border-radius: 50%;
+    background-color: #ccc;
+  }
+}
+
+.pageItem {
+  width: 95%;
+  justify-content: space-between;
+  background: #f2f0ef;
+  padding: 0 0.5rem;
+  margin: 2px 0;
+  border-radius: 5px;
+}
+
+.pageItem:hover {
+  background-color: #abb5de;
+}
+
+.activePageItem {
+  background-color: #abb5de;
+}
+
+.pageNameText {
+  flex: 8;
+  cursor: pointer;
+}
+
+.newPage {
+  width: 100%;
+  justify-content: space-evenly;
+  gap: 2rem;
+}

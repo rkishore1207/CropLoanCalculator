@@ -33,3 +33,15 @@
     background-color: #9a9fce;
   }
 }
+
+.pageName {
+  color: green;
+  font-size: larger;
+  margin: 0;
+  font-weight: 700;
+}
+
+.pageInfoMessage {
+  gap: 0.5rem;
+  font-weight: 500;
+}

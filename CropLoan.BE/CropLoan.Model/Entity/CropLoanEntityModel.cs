@@ -3,6 +3,7 @@
     public class CropLoanEntityModel
     {
         public Guid UID { get; set; }
+        public Guid PageUID { get; set; }
         public string RegisterNumber { get; set; }
         public string CustomerName { get; set; }
         public string LoanNumber { get; set; }

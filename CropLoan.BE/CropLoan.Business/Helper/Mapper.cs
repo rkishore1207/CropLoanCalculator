@@ -11,6 +11,8 @@ namespace CropLoan.Business.Helper
         {
             CreateMap<CropLoanViewModel, CropLoanEntityModel>().ReverseMap();
             CreateMap<CropLoanRequestModel, CropLoanEntityModel>().ReverseMap();
+            CreateMap<PageViewModel, PageEntity>().ReverseMap();
+            CreateMap<PageRequestModel, PageEntity>().ReverseMap();
         }
     }
 }
