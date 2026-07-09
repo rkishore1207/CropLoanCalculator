@@ -1,0 +1,116 @@
+2026-07-09 11:09:53.288 +05:30 [INF] HTTP GET /swagger responded 301 in 26.6266 ms
+2026-07-09 11:09:53.711 +05:30 [INF] HTTP GET /swagger/index.html responded 200 in 207.1368 ms
+2026-07-09 11:09:53.864 +05:30 [INF] HTTP GET /swagger/swagger-ui.css responded 200 in 35.6347 ms
+2026-07-09 11:09:53.864 +05:30 [INF] HTTP GET /swagger/swagger-ui-standalone-preset.js responded 200 in 17.6833 ms
+2026-07-09 11:09:53.873 +05:30 [INF] HTTP GET /swagger/swagger-ui-bundle.js responded 200 in 33.2176 ms
+2026-07-09 11:09:54.440 +05:30 [INF] HTTP GET /swagger/favicon-32x32.png responded 200 in 0.8344 ms
+2026-07-09 11:09:54.767 +05:30 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 347.4275 ms
+2026-07-09 11:10:57.613 +05:30 [WRN] Authentication failed for /api/cropLoan/page/546fc946-e06f-4009-9572-d4dd15987015/loans: missing Authorization header
+2026-07-09 11:10:57.690 +05:30 [INF] HTTP GET /api/cropLoan/page/546fc946-e06f-4009-9572-d4dd15987015/loans responded 401 in 159.1518 ms
+2026-07-09 11:11:30.394 +05:30 [INF] HTTP GET /swagger/index.html responded 200 in 1.2627 ms
+2026-07-09 11:11:30.903 +05:30 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 20.5875 ms
+2026-07-09 11:11:37.008 +05:30 [WRN] Authentication failed for /api/cropLoan/page/546fc946-e06f-4009-9572-d4dd15987015/loans: missing Authorization header
+2026-07-09 11:11:37.013 +05:30 [INF] HTTP GET /api/cropLoan/page/546fc946-e06f-4009-9572-d4dd15987015/loans responded 401 in 6.7506 ms
+2026-07-09 11:11:47.898 +05:30 [INF] HTTP GET /swagger/index.html responded 200 in 183.4292 ms
+2026-07-09 11:11:48.407 +05:30 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 196.9066 ms
+2026-07-09 11:12:10.432 +05:30 [INF] Request received: GetLoansByPageUID for "546fc946-e06f-4009-9572-d4dd15987015"
+2026-07-09 11:12:37.255 +05:30 [INF] Getting loans by page uid "546fc946-e06f-4009-9572-d4dd15987015"
+2026-07-09 11:12:54.789 +05:30 [ERR] HTTP GET /api/cropLoan/page/546fc946-e06f-4009-9572-d4dd15987015/loans responded 500 in 59001.5931 ms
+System.Exception: A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+   at CropLoan.Data.BaseRepo.GetSqlConnection() in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Data\BaseRepo.cs:line 149
+   at CropLoan.Data.BaseRepo.<>c__DisplayClass2_0`1.<<ExecuteStoredProcedureAsync>b__0>d.MoveNext() in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Data\BaseRepo.cs:line 23
+--- End of stack trace from previous location ---
+   at CropLoan.Data.BaseRepo.RetryLoginFailed[T](Func`1 func) in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Data\BaseRepo.cs:line 157
+   at CropLoan.Data.BaseRepo.ExecuteStoredProcedureAsync[T](String spName, SpParameter[] parameters) in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Data\BaseRepo.cs:line 20
+   at CropLoan.Data.Implementation.CropLoanRepository.GetLoansByPageUID(Guid pageUID) in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Data\Implementation\CropLoanRepository.cs:line 24
+   at CropLoan.Business.Implementation.CropLoanProcessController.GetLoansByPageUID(Guid pageUID) in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Business\Implementation\CropLoanProcessController.cs:line 36
+   at CropLoan.Api.Controllers.CropLoanController.GetLoansByPageUID(Guid pageUID) in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Api\Controllers\CropLoanController.cs:line 28
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2026-07-09 11:12:54.923 +05:30 [ERR] Unhandled exception for GET /api/cropLoan/page/546fc946-e06f-4009-9572-d4dd15987015/loans
+System.Exception: A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+   at CropLoan.Data.BaseRepo.GetSqlConnection() in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Data\BaseRepo.cs:line 149
+   at CropLoan.Data.BaseRepo.<>c__DisplayClass2_0`1.<<ExecuteStoredProcedureAsync>b__0>d.MoveNext() in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Data\BaseRepo.cs:line 23
+--- End of stack trace from previous location ---
+   at CropLoan.Data.BaseRepo.RetryLoginFailed[T](Func`1 func) in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Data\BaseRepo.cs:line 157
+   at CropLoan.Data.BaseRepo.ExecuteStoredProcedureAsync[T](String spName, SpParameter[] parameters) in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Data\BaseRepo.cs:line 20
+   at CropLoan.Data.Implementation.CropLoanRepository.GetLoansByPageUID(Guid pageUID) in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Data\Implementation\CropLoanRepository.cs:line 24
+   at CropLoan.Business.Implementation.CropLoanProcessController.GetLoansByPageUID(Guid pageUID) in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Business\Implementation\CropLoanProcessController.cs:line 36
+   at CropLoan.Api.Controllers.CropLoanController.GetLoansByPageUID(Guid pageUID) in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Api\Controllers\CropLoanController.cs:line 28
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at CropLoan.Api.Middlewares.GlobalExceptionMiddleware.InvokeAsync(HttpContext context) in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Api\Middlewares\GlobalExceptionMiddleware.cs:line 22
+2026-07-09 11:13:17.710 +05:30 [INF] Request received: GetLoansByPageUID for "546fc946-e06f-4009-9572-d4dd15987015"
+2026-07-09 11:13:17.712 +05:30 [INF] Getting loans by page uid "546fc946-e06f-4009-9572-d4dd15987015"
+2026-07-09 11:13:33.100 +05:30 [ERR] HTTP GET /api/cropLoan/page/546fc946-e06f-4009-9572-d4dd15987015/loans responded 500 in 16547.4578 ms
+System.Exception: A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+   at CropLoan.Data.BaseRepo.GetSqlConnection() in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Data\BaseRepo.cs:line 149
+   at CropLoan.Data.BaseRepo.<>c__DisplayClass2_0`1.<<ExecuteStoredProcedureAsync>b__0>d.MoveNext() in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Data\BaseRepo.cs:line 23
+--- End of stack trace from previous location ---
+   at CropLoan.Data.BaseRepo.RetryLoginFailed[T](Func`1 func) in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Data\BaseRepo.cs:line 157
+   at CropLoan.Data.BaseRepo.ExecuteStoredProcedureAsync[T](String spName, SpParameter[] parameters) in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Data\BaseRepo.cs:line 20
+   at CropLoan.Data.Implementation.CropLoanRepository.GetLoansByPageUID(Guid pageUID) in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Data\Implementation\CropLoanRepository.cs:line 24
+   at CropLoan.Business.Implementation.CropLoanProcessController.GetLoansByPageUID(Guid pageUID) in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Business\Implementation\CropLoanProcessController.cs:line 36
+   at CropLoan.Api.Controllers.CropLoanController.GetLoansByPageUID(Guid pageUID) in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Api\Controllers\CropLoanController.cs:line 28
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2026-07-09 11:14:44.416 +05:30 [ERR] Unhandled exception for GET /api/cropLoan/page/546fc946-e06f-4009-9572-d4dd15987015/loans
+System.Exception: A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+   at CropLoan.Data.BaseRepo.GetSqlConnection() in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Data\BaseRepo.cs:line 149
+   at CropLoan.Data.BaseRepo.<>c__DisplayClass2_0`1.<<ExecuteStoredProcedureAsync>b__0>d.MoveNext() in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Data\BaseRepo.cs:line 23
+--- End of stack trace from previous location ---
+   at CropLoan.Data.BaseRepo.RetryLoginFailed[T](Func`1 func) in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Data\BaseRepo.cs:line 157
+   at CropLoan.Data.BaseRepo.ExecuteStoredProcedureAsync[T](String spName, SpParameter[] parameters) in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Data\BaseRepo.cs:line 20
+   at CropLoan.Data.Implementation.CropLoanRepository.GetLoansByPageUID(Guid pageUID) in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Data\Implementation\CropLoanRepository.cs:line 24
+   at CropLoan.Business.Implementation.CropLoanProcessController.GetLoansByPageUID(Guid pageUID) in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Business\Implementation\CropLoanProcessController.cs:line 36
+   at CropLoan.Api.Controllers.CropLoanController.GetLoansByPageUID(Guid pageUID) in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Api\Controllers\CropLoanController.cs:line 28
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at CropLoan.Api.Middlewares.GlobalExceptionMiddleware.InvokeAsync(HttpContext context) in D:\CropLoanCalculator\CropLoan.BE\CropLoan.Api\Middlewares\GlobalExceptionMiddleware.cs:line 22
+2026-07-09 11:16:48.493 +05:30 [INF] HTTP GET /swagger responded 301 in 10.2211 ms
+2026-07-09 11:16:48.650 +05:30 [INF] HTTP GET /swagger/index.html responded 200 in 102.1509 ms
+2026-07-09 11:16:48.776 +05:30 [INF] HTTP GET /swagger/swagger-ui.css responded 200 in 116.8840 ms
+2026-07-09 11:16:48.783 +05:30 [INF] HTTP GET /swagger/swagger-ui-standalone-preset.js responded 200 in 121.2340 ms
+2026-07-09 11:16:48.811 +05:30 [INF] HTTP GET /swagger/swagger-ui-bundle.js responded 200 in 148.9224 ms
+2026-07-09 11:16:49.016 +05:30 [INF] HTTP GET /swagger/favicon-32x32.png responded 200 in 0.2359 ms
+2026-07-09 11:16:49.114 +05:30 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 114.2083 ms

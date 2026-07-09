@@ -7,7 +7,7 @@ namespace CropLoan.Business.Interface
     {
         Task<List<CropLoanViewModel>> GetLoansByPageUID(Guid pageUID);
         Task AddOrUpdateLoan(CropLoanRequestModel cropLoanRequest);
-        Task<List<CropLoanViewModel>> GetLoansWithFilter(LoanFilterRequest filterRequest);
+        Task<PagedResult<CropLoanViewModel>> GetLoansWithFilter(LoanFilterRequest filterRequest);
         Task GenerateExcelByPageUID(Guid pageUID);
         Task DeleteLoan(Guid loanUID);
         Task<List<PageViewModel>> GetPages();

@@ -1,9 +1,17 @@
 
+using CropLoan.Api.Middlewares;
+using CropLoan.Api.Security;
 using CropLoan.Utility.Configuration;
 using CropLoan.Data;
 using CropLoan.Business;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, services, configuration) => configuration
+    .ReadFrom.Configuration(context.Configuration)
+    .ReadFrom.Services(services)
+    .Enrich.FromLogContext());
 
 // Add services to the container.
 
@@ -13,6 +21,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IConfigurationService, ConfigurationService>();
+builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection(AuthSettings.SectionName));
 
 builder.Services.AddBusinessServices().AddDataServices();
 
@@ -26,6 +35,9 @@ builder.Services.AddCors(opts =>
 
 var app = builder.Build();
 
+app.UseMiddleware<GlobalExceptionMiddleware>();
+app.UseSerilogRequestLogging();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -34,8 +46,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors();
-app.UseAuthorization();
+app.UseRouting();
+app.UseCors("ReactCORS");
+//app.UseMiddleware<AuthenticationMiddleware>();
+//app.UseMiddleware<AuthorizationMiddleware>();
 
 
 app.MapControllers();
